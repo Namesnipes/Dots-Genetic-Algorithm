@@ -1,5 +1,3 @@
-var myDot = null;
-
 document.getElementById("game").addEventListener('click',function(e){
   var rect = e.target.getBoundingClientRect()
   var x = e.clientX - rect.left
@@ -24,16 +22,26 @@ document.addEventListener("keydown",function(e){
   } else if(kc == 69){
     myDot.setRadius(myDot.radius-1)
   }
-  clearCanvas()
-  myDot.drawMe()
+  advanceStep()
 
 })
 
+function advanceStep(){
+  clearCanvas()
+  for(dot in Dot.allDots){
+    Dot.allDots[dot].drawMe()
+  }
+}
+
+
 class Dot{
+  static allDots = [];
+  static movementSpeed = 20;
   constructor(x,y,radius){
     this.x = x
     this.y = y;
     this.radius = radius
+    Dot.allDots.push(this)
   }
   setX(x){
     this.x = Math.max(0+this.radius, Math.min(x, canvas.width-this.radius));
@@ -52,16 +60,16 @@ class Dot{
   move(dir){ //0: left, 1: up, 2:right, 3:down
     switch(dir){
       case 0:
-        this.setX(this.x - 5);
+        this.setX(this.x - Dot.movementSpeed);
         break;
       case 1:
-        this.setY(this.y - 5);
+        this.setY(this.y - Dot.movementSpeed);
         break;
       case 2:
-        this.setX(this.x + 5);
+        this.setX(this.x + Dot.movementSpeed);
         break;
       case 3:
-        this.setY(this.y + 5);
+        this.setY(this.y + Dot.movementSpeed);
         break;
     }
 
