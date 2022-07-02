@@ -1,48 +1,13 @@
-document.getElementById("game").addEventListener('click',function(e){
-  var rect = e.target.getBoundingClientRect()
-  var x = e.clientX - rect.left
-  var y = e.clientY - rect.top;
-  let d = new Dot(x,y,5)
-  myDot = d;
-  d.drawMe()
-})
-
-document.addEventListener("keydown",function(e){
-  var kc = e.keyCode
-  if(kc==65){
-    myDot.move(0)
-  } else if(kc == 87){
-    myDot.move(1)
-  } else if(kc == 68){
-    myDot.move(2)
-  } else if(kc == 83){
-    myDot.move(3)
-  } else if(kc == 81){
-    myDot.setRadius(myDot.radius+1)
-  } else if(kc == 69){
-    myDot.setRadius(myDot.radius-1)
-  }
-  advanceStep()
-
-})
-
-function advanceStep(){
-  clearCanvas()
-  for(dot in Dot.allDots){
-    Dot.allDots[dot].drawMe()
-  }
-}
-
-
 class Dot{
-  static allDots = [];
   static movementSpeed = 20;
-  constructor(x,y,radius){
+
+  constructor(x,y,radius,color){
     this.x = x
     this.y = y;
     this.radius = radius
-    Dot.allDots.push(this)
+    this.color = color
   }
+
   setX(x){
     this.x = Math.max(0+this.radius, Math.min(x, canvas.width-this.radius));
   }
@@ -54,9 +19,36 @@ class Dot{
     this.setX(this.x)
     this.setY(this.y)
   }
-  drawMe(){
-    drawDot(this.x,this.y,this.radius)
+
+  getFitness(){
+    if(Population.checkpoint){
+      return -Math.sqrt((this.x - Population.checkpoint.x)**2 + (this.y - Population.checkpoint.y)**2)
+    } else {
+      return 99999999
+    }
   }
+
+  getBaby(){
+    return new Dot(this.x,this.y,this.radius,this.color || "black")
+  }
+
+  mutateMe(){
+    var mutationRate = 0.3
+    var diceRoll1 = Math.random()
+    var diceRoll2 = Math.random()
+    if(mutationRate > diceRoll1){
+      this.setX(this.x + (Math.random() * 50) - 25)
+    }
+    if(mutationRate > diceRoll2){
+      this.setY(this.y + (Math.random() * 50) - 25)
+    }
+
+  }
+
+  drawMe(){
+    drawDot(this.x,this.y,this.radius,this.color || "black")
+  }
+
   move(dir){ //0: left, 1: up, 2:right, 3:down
     switch(dir){
       case 0:
