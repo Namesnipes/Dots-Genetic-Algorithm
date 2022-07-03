@@ -1,8 +1,11 @@
 class Population {
   static allDots = [];
   static checkpoint;
+  static creativity = 0;
 
   constructor(){
+    this.lowestFitness = 999999;
+    this.failures = 0;
   }
 
   makeDots(number){
@@ -39,19 +42,58 @@ class Population {
   }
 
   naturalSelection(){
+    var fitnessSum = 0;
+    var percentChange = 0;
+    var newLow = -1;
+
+    for(var i = 0; i < Population.allDots.length; i++){
+      var f = Population.allDots[i].getFitness()
+      fitnessSum += f
+      if(Math.abs(f) < this.lowestFitness){
+        newLow = Math.abs(f)
+      }
+    }
+
+    if(newLow === -1){
+      this.failures += 1;
+    } else {
+      this.failures = 0;
+      this.lowestFitness = newLow
+    }
+    if(this.failures >= 5 && this.lowestFitness > 10){
+      Population.creativity = 1
+    } else {
+      Population.creativity = 0
+    }
+
+    this.lastFitnessSum = fitnessSum
     var newDots = [];
     newDots.push(Population.allDots[Math.floor(Population.allDots.length * Math.random())].getBaby())
     for(var i = 0; i < Population.allDots.length-1; i++){
       var fitness1 = Population.allDots[i].getFitness()
       var fitness2 = Population.allDots[i+1].getFitness()
+      var betterDot;
+      var worstDot;
       if(fitness1 > fitness2){
-        newDots.push(Population.allDots[i].getBaby())
+        betterDot = Population.allDots[i]
+        worstDot = Population.allDots[i+1]
       } else if(fitness2 > fitness1){
-        newDots.push(Population.allDots[i+1].getBaby())
+        betterDot = Population.allDots[i+1]
+        worstDot = Population.allDots[i]
       } else {
-        newDots.push(Population.allDots[i].getBaby())
+        betterDot = worstDot = Population.allDots[i]
+      }
+      if(Math.random() < Population.creativity){
+        if(Math.random() < 0.50){
+          newDots.push(worstDot.getBaby())
+        } else {
+          newDots.push(betterDot.getBaby())
+        }
+      } else {
+        newDots.push(betterDot.getBaby())
       }
     }
+
     Population.allDots = newDots
   }
 

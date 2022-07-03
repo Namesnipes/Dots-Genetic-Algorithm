@@ -11,7 +11,12 @@
   <label for="run">Run from me</label><br>
 
   <input type="number" id="mutation" name="mutation" min="0" max="1" step="0.1">
-  <label for="mutation">Mutation rate (between 0 and 1) (not working):</label>
+  <label for="mutation">Mutation rate</label>
+
+  <input type="number" id="wait" name="wait" min="0" max="1000" step="10">
+  <label for="wait">Generation length (ms)</label>
+  <p> <b>shift+click</b> to make a goal</p>
+  <p> <b>ctrl+click</b> to make a obstacle</p>
 </body>
 
 <script src="helper.js"></script defer>

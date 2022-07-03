@@ -1,7 +1,7 @@
 class Dot{
   static movementSpeed = 20;
   static mutationRate = 0.3
-  static fitnessMultiplier = 1;
+  static fitnessMultiplier = -1;
 
   constructor(x,y,radius,color){
     this.x = x
@@ -32,7 +32,8 @@ class Dot{
 
   getFitness(){
     if(Population.checkpoint){
-      return Dot.fitnessMultiplier * Math.sqrt((this.x - Population.checkpoint.x)**2 + (this.y - Population.checkpoint.y)**2)
+      var f = Dot.fitnessMultiplier * Math.sqrt((this.x - Population.checkpoint.x)**2 + (this.y - Population.checkpoint.y)**2)
+      return f
     } else {
       return 99999999
     }

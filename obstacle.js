@@ -22,7 +22,6 @@ class Obstacle{
     var rbottom = this.y + this.height
 
     if(x > rleft && x < rright && y > rtop && y < rbottom){
-      console.log('t')
       return true
     }
     return false

@@ -5,17 +5,14 @@ var dotCount = 1000
 var isFollowing = true
 
 document.getElementById("game").addEventListener('click',function(e){
+  var rect = e.target.getBoundingClientRect()
+  var x = e.clientX - rect.left
+  var y = e.clientY - rect.top;
   if(e.shiftKey){
-    var rect = e.target.getBoundingClientRect()
-    var x = e.clientX - rect.left
-    var y = e.clientY - rect.top;
+    pop = new Population();
     pop.setCheckpoint(x,y)
-  } else {
-    var rect = e.target.getBoundingClientRect()
-    var x = e.clientX - rect.left
-    var y = e.clientY - rect.top;
-    let d = new Dot(x,y,5)
-    console.log(d.getFitness())
+  } else if(e.ctrlKey){
+    new Obstacle(x,y,50,100)
   }
   pop.advanceStep()
 })
@@ -42,6 +39,7 @@ document.addEventListener("keydown",function(e){
 })
 
 document.addEventListener('mousemove', e => {
+  return
   var rect = document.getElementById("game").getBoundingClientRect()
   var x = e.clientX - rect.left
   var y = e.clientY - rect.top;
@@ -49,11 +47,22 @@ document.addEventListener('mousemove', e => {
 });
 
 document.querySelector('input[name="runOrChase"]:checked').checked = false;
-document.getElementById("run").checked = true
+document.getElementById("chase").checked = true
 document.addEventListener('input',(e)=>{
-  if(e.target.getAttribute('name')=="runOrChase")
+  if(e.target.getAttribute('name')=="runOrChase"){
     console.log(e.target.value)
     Dot.fitnessMultiplier = e.target.value
+  }
+})
+
+document.getElementById("mutation").value = Dot.mutationRate
+document.getElementById("mutation").addEventListener("change",function(e){
+  Dot.mutationRate = e.target.value
+})
+
+document.getElementById("wait").value = waitTimeMs
+document.getElementById("wait").addEventListener("change",function(e){
+  waitTimeMs = e.target.value
 })
 
 async function wait(ms){
