@@ -1,6 +1,8 @@
 var myDot;
 var pop = new Population();
 var waitTimeMs = 10
+var dotCount = 1000
+var isFollowing = true
 
 document.getElementById("game").addEventListener('click',function(e){
   if(e.shiftKey){
@@ -46,13 +48,22 @@ document.addEventListener('mousemove', e => {
   pop.setCheckpoint(x,y)
 });
 
+document.querySelector('input[name="runOrChase"]:checked').checked = false;
+document.getElementById("run").checked = true
+document.addEventListener('input',(e)=>{
+  if(e.target.getAttribute('name')=="runOrChase")
+    console.log(e.target.value)
+    Dot.fitnessMultiplier = e.target.value
+})
+
 async function wait(ms){
   await new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function start(){
+  new Obstacle(400,300,50,100)
   pop.setCheckpoint(400,400)
-  pop.makeDots(1000)
+  pop.makeDots(dotCount)
   pop.advanceStep()
   while(true){
     await wait(waitTimeMs)
@@ -61,7 +72,6 @@ async function start(){
     await wait(waitTimeMs)
     pop.mutateDots()
     pop.advanceStep()
-    console.log('hi')
   }
 }
 

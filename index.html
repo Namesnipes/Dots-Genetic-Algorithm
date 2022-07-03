@@ -4,11 +4,19 @@
 </head>
 
 <body>
-  <canvas id="game" width="800" height="800">
+  <canvas id="game" width="800" height="800"> </canvas>
+  <input type="radio" id="chase" name="runOrChase" value=-1>
+  <label for="chase">Chase me</label><br>
+  <input type="radio" id="run" name="runOrChase" value=1 checked=false>
+  <label for="run">Run from me</label><br>
+
+  <input type="number" id="mutation" name="mutation" min="0" max="1" step="0.1">
+  <label for="mutation">Mutation rate (between 0 and 1) (not working):</label>
 </body>
 
 <script src="helper.js"></script defer>
 <script src="dot.js"></script defer>
+<script src="obstacle.js"></script defer>
 <script src="population.js"></script defer>
 <script src="game.js"></script defer>
 </html>

@@ -3,3 +3,13 @@
   margin: auto;
   display: block;
 }
+
+body{
+  text-align: center
+}
+#follow{
+  display:inline-block;
+  justify-content: center;
+  align-items: center;
+  text-align: center
+}

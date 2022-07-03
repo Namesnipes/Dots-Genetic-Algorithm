@@ -7,7 +7,18 @@ class Population {
 
   makeDots(number){
     for(var i = 0; i < number; i++){
-      var d = new Dot(Math.random() * canvas.width,Math.random() * canvas.height,5)
+      var randX = Math.random() * canvas.width
+      var randY = Math.random() * canvas.height
+      var bad;
+      for(var j = 0; j < Obstacle.Obstacles.length; j++){
+        bad = Obstacle.Obstacles[j].isPointInObstacle(randX,randY)
+        if(bad) break
+      }
+      if(bad){
+        i--;
+        continue
+      }
+      var d = new Dot(randX,randY,5)
       Population.allDots.push(d)
     }
   }
@@ -18,10 +29,13 @@ class Population {
 
   advanceStep(){
     clearCanvas()
+    if(Population.checkpoint) Population.checkpoint.drawMe()
+    for(var i = 0; i < Obstacle.Obstacles.length; i++){
+      Obstacle.Obstacles[i].drawMe()
+    }
     for(var i = 0; i < Population.allDots.length; i++){
       Population.allDots[i].drawMe()
     }
-    if(Population.checkpoint) Population.checkpoint.drawMe()
   }
 
   naturalSelection(){

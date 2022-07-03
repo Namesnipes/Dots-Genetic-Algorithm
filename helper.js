@@ -10,6 +10,14 @@ function drawDot(x,y,radius,color='black'){
   context.stroke();
 }
 
+function drawRect(x,y,width,height,color='black'){
+  context.beginPath();
+  context.rect(x, y, width, height);
+  context.fillStyle = color
+  context.fill()
+  context.stroke
+}
+
 function clearCanvas(){
   context.clearRect(0, 0, canvas.width, canvas.height);
 }

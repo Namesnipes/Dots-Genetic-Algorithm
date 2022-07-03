@@ -1,5 +1,7 @@
 class Dot{
   static movementSpeed = 20;
+  static mutationRate = 0.3
+  static fitnessMultiplier = 1;
 
   constructor(x,y,radius,color){
     this.x = x
@@ -9,10 +11,18 @@ class Dot{
   }
 
   setX(x){
-    this.x = Math.max(0+this.radius, Math.min(x, canvas.width-this.radius));
+    var newX = Math.max(0+this.radius, Math.min(x, canvas.width-this.radius));
+    for(var i = 0; i < Obstacle.Obstacles.length; i++){
+      if(Obstacle.Obstacles[i].isPointInObstacle(newX,this.y)) return
+    }
+    this.x = newX
   }
   setY(y){
-    this.y = Math.max(0+this.radius, Math.min(y, canvas.width-this.radius));
+    var newY = Math.max(0+this.radius, Math.min(y, canvas.width-this.radius));
+    for(var i = 0; i < Obstacle.Obstacles.length; i++){
+      if(Obstacle.Obstacles[i].isPointInObstacle(this.x,newY)) return
+    }
+    this.y = newY
   }
   setRadius(r){
     this.radius = Math.max(1, Math.min(r, canvas.width/2));
@@ -22,7 +32,7 @@ class Dot{
 
   getFitness(){
     if(Population.checkpoint){
-      return -Math.sqrt((this.x - Population.checkpoint.x)**2 + (this.y - Population.checkpoint.y)**2)
+      return Dot.fitnessMultiplier * Math.sqrt((this.x - Population.checkpoint.x)**2 + (this.y - Population.checkpoint.y)**2)
     } else {
       return 99999999
     }
@@ -33,7 +43,7 @@ class Dot{
   }
 
   mutateMe(){
-    var mutationRate = 0.3
+    var mutationRate = Dot.mutationRate
     var diceRoll1 = Math.random()
     var diceRoll2 = Math.random()
     if(mutationRate > diceRoll1){
