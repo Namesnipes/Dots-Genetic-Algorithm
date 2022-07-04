@@ -1,15 +1,38 @@
 #game{
   border-style: solid;
   margin: auto;
-  display: block;
+  display: inline-block;
 }
 
 body{
-  text-align: center
+  text-align: center;
+  position: relative;
 }
+
+#info{
+  position:absolute;
+  display:inline;
+  text-align:left;
+  margin-left: 20px;
+  margin-top: 100px;
+}
+
+#mutationContainer{
+  display:block;
+  margin-bottom: 10px;
+  margin-top: 10px
+}
+
+#lengthContainer{
+  display:block;
+  margin-bottom: 10px;
+  margin-top: 10px
+}
+
+
 #follow{
   display:inline-block;
   justify-content: center;
   align-items: center;
-  text-align: center
+  text-align: center;
 }

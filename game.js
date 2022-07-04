@@ -9,10 +9,12 @@ document.getElementById("game").addEventListener('click',function(e){
   var x = e.clientX - rect.left
   var y = e.clientY - rect.top;
   if(e.shiftKey){
+    var width = 50;
+    var length = 100;
+    new Obstacle(x - width/2,y - length/2,width,length)
+  } else {
     pop = new Population();
     pop.setCheckpoint(x,y)
-  } else if(e.ctrlKey){
-    new Obstacle(x,y,50,100)
   }
   pop.advanceStep()
 })
